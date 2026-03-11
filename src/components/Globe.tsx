@@ -47,9 +47,10 @@ export default function Globe() {
 
   // Load data
   useEffect(() => {
+    const base = process.env.NEXT_PUBLIC_BASE_PATH || "";
     Promise.all([
-      fetch("/data/globe-points.json").then((r) => r.json()),
-      fetch("/data/disease-list.json").then((r) => r.json()),
+      fetch(`${base}/data/globe-points.json`).then((r) => r.json()),
+      fetch(`${base}/data/disease-list.json`).then((r) => r.json()),
     ]).then(([points, diseases]) => {
       setAllPoints(points);
       setDiseaseList(diseases);

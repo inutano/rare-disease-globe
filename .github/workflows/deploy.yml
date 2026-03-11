@@ -30,6 +30,7 @@ jobs:
       - name: Build static export
         env:
           PAGES_BASE_PATH: /rare-disease-globe
+          NEXT_PUBLIC_BASE_PATH: /rare-disease-globe
         run: npm run build
 
       - uses: actions/upload-pages-artifact@v3
