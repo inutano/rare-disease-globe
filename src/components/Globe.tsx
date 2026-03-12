@@ -160,6 +160,12 @@ export default function Globe() {
         <p className="text-xs text-blue-200/40 mt-0.5">
           Source: Orphadata (Orphanet) &bull; CC-BY-4.0
         </p>
+        <a
+          href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}/game`}
+          className="pointer-events-auto inline-block mt-2 px-3 py-1.5 text-xs font-medium text-blue-300 hover:text-white bg-white/10 hover:bg-white/20 rounded-lg border border-white/10 transition"
+        >
+          Play Detective
+        </a>
       </div>
 
       {/* Search / Filter Panel */}
