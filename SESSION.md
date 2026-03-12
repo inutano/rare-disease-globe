@@ -70,9 +70,64 @@ An interactive 3D globe visualization of rare disease prevalence data, inspired 
 | Data Processing | TypeScript script with xml2js |
 | Hosting | GitHub Pages via Actions |
 
+## Session 2: Rare Disease Detective Game
+
+### 6. Game Concept
+> "One of my colleagues really liked it and told me if you can build a game on it. I have no idea what kind of gaming app running on this vis but maybe you have an idea?"
+
+- Brainstormed 4 game concepts that fit the globe visualization:
+  1. **Rare Disease Detective** — progressive clue-based mystery/quiz (recommended)
+  2. **Prevalence Pinpoint** — GeoGuesser-style location guessing
+  3. **Outbreak!** — time-trial country clicking
+  4. **Connect the Dots** — pattern matching multiple-choice
+- User chose #1: Rare Disease Detective
+
+### 7. Game Implementation
+> "yes, let's make #1"
+
+- Planned architecture: separate `/game` route, new components, pure game logic in lib modules
+- Analyzed data: 142 diseases with 3+ country-level data points eligible for the game
+- Built 11 files (1,178 lines of new code):
+
+| File | Purpose |
+|------|---------|
+| `src/types/game.ts` | Shared TypeScript interfaces (GameState, Clue, RoundResult, etc.) |
+| `src/lib/clue-generator.ts` | Generates 5 progressive clues from disease data with continent detection |
+| `src/lib/game-reducer.ts` | useReducer state machine for game flow (menu → playing → roundResult → gameOver) |
+| `src/components/GameGlobe.tsx` | Game-mode globe wrapper (hides disease names, controls point visibility) |
+| `src/components/CluePanel.tsx` | Right-side panel showing revealed clues with icons and progress dots |
+| `src/components/GuessInput.tsx` | Autocomplete input with disease list dropdown, shake animation on wrong guess |
+| `src/components/GameHUD.tsx` | Round counter and score display |
+| `src/components/RoundModal.tsx` | Between-round results and game-over summary with per-round breakdown |
+| `src/app/game/page.tsx` | Game page orchestrator wiring state, clues, globe, and UI components |
+| `src/app/globals.css` | Added shake and fade-in CSS animations |
+| `src/components/Globe.tsx` | Added "Play Detective" navigation link |
+
+#### Game Design
+- **5 rounds** per game, **5 clues** per round
+- Clue progression (hardest → easiest):
+  1. Disease classification (disease, syndrome, anomaly...)
+  2. Worldwide prevalence range
+  3. Geographic scope — grey dots appear on the globe
+  4. Hotspot country — globe zooms to highest prevalence region
+  5. Full prevalence pattern — color-coded dots revealed
+- **Scoring:** 500 pts (1 clue) → 400 → 300 → 200 → 100 pts (5 clues), max 2,500
+- Wrong guesses auto-reveal the next clue
+- No new npm dependencies — built entirely on existing stack
+
+### 8. Deployment
+> "let's deploy it to the github pages"
+
+- Committed and pushed to main
+- Initial deploy failed due to transient GitHub Actions 401 error (infrastructure issue)
+- Reran workflow — deployed successfully
+
+**Live game:** https://inutano.github.io/rare-disease-globe/game
+
 ## Data Stats
 
 - **4,549** rare diseases with prevalence data
 - **1,690** country-level data points on the globe
 - **~70** countries/regions mapped
+- **142** diseases eligible for the detective game (3+ country-level entries)
 - Prevalence classes from `<1/1,000,000` to `>1/1,000`
